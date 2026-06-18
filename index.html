@@ -1,68 +1,130 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta name="monetag" content="4045677264b6c629c91a711b855bfaa6">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Простой красивый сайт</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #f0f4f8;
-      color: #333;
-    }
-    header {
-      background-color: #4A90E2;
-      padding: 20px;
-      text-align: center;
-      color: white;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    section {
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    h2 {
-      text-align: center;
-      color: #4A90E2;
-      margin-bottom: 20px;
-    }
-    p {
-      line-height: 1.6;
-      font-size: 1.1em;
-    }
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      margin: 20px auto;
-      border-radius: 10px;
-    }
-    footer {
-      background-color: #4A90E2;
-      color: white;
-      text-align: center;
-      padding: 15px 20px;
-      margin-top: 40px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Вход в систему</title>
+    <style>
+        * { box-sizing: border-box; font-family: Roboto, Helvetica, Arial, sans-serif; }
+        
+        body { 
+            background-color: #f5f5f5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        
+        .login-form { 
+            background: #ffffff;
+            border: 1px solid #e0e0e0; 
+            padding: 30px 24px; 
+            border-radius: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+            width: 100%; 
+            max-width: 360px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+        }
+        
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            color: #212121;
+            text-align: center;
+        }
+        
+        input, button { 
+            height: 48px;
+            padding: 0 16px; 
+            font-size: 16px; 
+            border-radius: 8px;
+            -webkit-appearance: none; 
+        }
+        
+        input {
+            border: 1px solid #bdbdbd;
+            background-color: #fafafa;
+            color: #212121;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #1a73e8; 
+            background-color: #ffffff;
+        }
+        
+        button { 
+            cursor: pointer; 
+            background-color: #1a73e8; 
+            color: white; 
+            border: none; 
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+        }
+        
+        button:active {
+            background-color: #1557b0; 
+        }
+        
+        .error { 
+            color: #d93025; 
+            font-size: 14px; 
+            display: none; 
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Добро пожаловать на мой сайт</h1>
-  </header>
-  <section>
-    <h2>О себе</h2>
-    <p>Это пример простого и красивого сайта. Здесь можно разместить информацию о себе, фотографии или что угодно, что вам интересно.</p>
-    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Пример изображения" />
-  </section>
-  <footer>
-    <p></p>
-  </footer>
+
+    <form class="login-form" id="loginForm">
+        <h2>Вход</h2>
+        <input type="text" id="username" placeholder="Имя пользователя" autocomplete="username" inputmode="text" autocapitalize="none" required>
+        <input type="password" id="password" placeholder="Пароль" autocomplete="current-password" required>
+        <div class="error" id="errorMessage">Неверное имя или пароль</div>
+        <button type="submit">Войти</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.style.display = 'none';
+
+            const name = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const serverUrl = 'https:/ /robertsserver.onrender.com/login/';
+
+            try {
+                const response = await fetch(serverUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        password: password
+                    })
+                });
+
+                if (response.ok) {
+                    window.location.href = 'https://robertsserver.onrender.com';
+                } else {
+                    errorDiv.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert('Ошибка соединения с сервером');
+            }
+        });
+    </script>
+
 </body>
 </html>
